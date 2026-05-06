@@ -42,15 +42,17 @@ export const BenchmarkLeaderboardScene: React.FC<Props> = ({ scene }) => {
   const { fps } = useVideoConfig();
   const t = frame / fps;
 
+  // Defaults shown only if no benchData is passed via the scene spec.
+  // Replace these with your topic's actual contenders + scores.
   const data = (scene as any).benchData ?? {
-    eyebrow: "Coding · Benchmark",
-    title: "SWE-Bench",
-    subtitle: "Real-World Coding",
+    eyebrow: "Benchmark · Category",
+    title: "Your Benchmark Name",
+    subtitle: "What it measures",
     entries: [
-      { name: "Claude Opus 4.7", logoSrc: "refs/anthropic.svg", brandColor: "#D97757", score: 78.4, fallbackChar: "✱" },
-      { name: "GPT 5.5",         logoSrc: "refs/openai.svg",   brandColor: "#10A37F", score: 71.2, fallbackChar: "G" },
-      { name: "Gemini 3.1 Pro",  logoSrc: "refs/gemini.svg",   brandColor: "#4285F4", score: 67.8, fallbackChar: "✦" },
-      { name: "Grok 4",          logoSrc: "refs/grok.svg",     brandColor: "#000000", score: 62.1, fallbackChar: "X" },
+      { name: "Contender A", logoSrc: "refs/contender-a.svg", brandColor: "#D97757", score: 78.0, fallbackChar: "A" },
+      { name: "Contender B", logoSrc: "refs/contender-b.svg", brandColor: "#10A37F", score: 71.0, fallbackChar: "B" },
+      { name: "Contender C", logoSrc: "refs/contender-c.svg", brandColor: "#4285F4", score: 67.0, fallbackChar: "C" },
+      { name: "Contender D", logoSrc: "refs/contender-d.svg", brandColor: "#000000", score: 62.0, fallbackChar: "D" },
     ] as BenchEntry[],
   };
 

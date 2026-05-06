@@ -22,8 +22,8 @@ interface ClaudeChatSceneProps { scene: Scene; }
  *   - Large white serif heading appears at top (builds word by word as narration plays)
  *   - salmonHighlightLine: the matching text in the response gets a salmon (#E8907A) highlight box
  *
- * This matches the editing pattern from the reference videos where "Saves almost 75%"
- * appears as a large heading on top of the dimmed Claude response text.
+ * This matches the "headline overlays the source" pattern: a big headline
+ * at the top while the chat content stays visible underneath, dimmed.
  */
 export const ClaudeChatScene: React.FC<ClaudeChatSceneProps> = ({ scene }) => {
   const frame = useCurrentFrame();

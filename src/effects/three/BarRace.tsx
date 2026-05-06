@@ -4,11 +4,13 @@ import { useCurrentFrame, useVideoConfig, interpolate, Easing } from "remotion";
 import { BloomHalo, SparkBurst } from "./Bloom";
 
 /**
- * Two horizontal benchmark bars racing — DeepSeek (top, yellow/winning)
- * overtakes Gemini (bottom, gray) by ~9 percentage points.
+ * Two horizontal benchmark bars racing — winner (top, emissive yellow)
+ * overtakes loser (bottom, gray). Demo defaults: 0.92 vs 0.60. Override
+ * via props if you wire them up; the visual is the same regardless of
+ * what brands the bars represent.
  *
  * Polish: particle trail streams from the leading bar's tip, a spark
- * burst fires the moment DeepSeek crosses Gemini's height, and bloom
+ * burst fires the moment winner crosses loser's height, and bloom
  * halos give the tip a "comet" feel.
  */
 export const BarRace: React.FC = () => {
@@ -16,8 +18,8 @@ export const BarRace: React.FC = () => {
   const { fps } = useVideoConfig();
   const t = frame / fps;
 
-  const targetGemini = 0.6;
-  const targetDeepSeek = 0.92;
+  const targetLoser = 0.6;
+  const targetWinner = 0.92;
   const startupDelay = 0.25;
   const growDuration = 1.6;
   const local = t - startupDelay;
@@ -32,11 +34,11 @@ export const BarRace: React.FC = () => {
   const barHeight = 0.55;
   const barDepth = 0.35;
 
-  const geminiW = targetGemini * progress * fullWidth;
-  const deepseekW = targetDeepSeek * progress * fullWidth;
+  const loserW = targetLoser * progress * fullWidth;
+  const winnerW = targetWinner * progress * fullWidth;
 
-  // Overtake moment: when DeepSeek crosses Gemini's *width*
-  const overtakeProgress = targetGemini / targetDeepSeek;
+  // Overtake moment: when winner crosses loser's *width*
+  const overtakeProgress = targetLoser / targetWinner;
   const overtakeTime = startupDelay + growDuration * overtakeProgress;
   const winPulse = t > overtakeTime ? Math.exp(-(t - overtakeTime) * 3) : 0;
 
@@ -45,9 +47,9 @@ export const BarRace: React.FC = () => {
 
   return (
     <group rotation={[0.05, 0, 0]} position={[originX, 0, 0]}>
-      {/* DeepSeek bar (winner) — dark v4: emissive yellow */}
-      <mesh position={[deepseekW / 2, 0.55, 0]} castShadow>
-        <boxGeometry args={[deepseekW || 0.001, barHeight, barDepth]} />
+      {/* Winner bar — emissive yellow on top */}
+      <mesh position={[winnerW / 2, 0.55, 0]} castShadow>
+        <boxGeometry args={[winnerW || 0.001, barHeight, barDepth]} />
         <meshStandardMaterial
           color="#FFE94A"
           emissive="#FFCC1A"
@@ -58,8 +60,8 @@ export const BarRace: React.FC = () => {
       </mesh>
 
       {/* Tip glow + bloom halo (the "comet head") */}
-      {deepseekW > 0.05 && (
-        <group position={[deepseekW, 0.55, 0]}>
+      {winnerW > 0.05 && (
+        <group position={[winnerW, 0.55, 0]}>
           <mesh>
             <sphereGeometry args={[barHeight * 0.55, 16, 16]} />
             <meshStandardMaterial
@@ -82,7 +84,7 @@ export const BarRace: React.FC = () => {
 
       {/* Comet trail — particles streaming back from the tip */}
       <CometTrail
-        tipX={deepseekW}
+        tipX={winnerW}
         y={0.55}
         progress={progress}
         t={local}
@@ -91,7 +93,7 @@ export const BarRace: React.FC = () => {
 
       {/* Spark burst at overtake moment */}
       <SparkBurst
-        position={[targetGemini * fullWidth, 0.55, 0.2]}
+        position={[targetLoser * fullWidth, 0.55, 0.2]}
         count={24}
         color="#FFE94A"
         triggerSec={overtakeTime}
@@ -102,7 +104,7 @@ export const BarRace: React.FC = () => {
 
       {/* Comet trail — particles streaming back from the tip */}
       <CometTrail
-        tipX={deepseekW}
+        tipX={winnerW}
         y={0.55}
         progress={progress}
         t={local}
@@ -111,7 +113,7 @@ export const BarRace: React.FC = () => {
 
       {/* Spark burst at overtake moment */}
       <SparkBurst
-        position={[targetGemini * fullWidth, 0.55, 0.2]}
+        position={[targetLoser * fullWidth, 0.55, 0.2]}
         count={24}
         color="#FFE94A"
         triggerSec={overtakeTime}
@@ -120,9 +122,9 @@ export const BarRace: React.FC = () => {
         reach={1.2}
       />
 
-      {/* Gemini bar (loser) — light theme: medium gray on white */}
-      <mesh position={[geminiW / 2, -0.55, 0]} castShadow>
-        <boxGeometry args={[geminiW || 0.001, barHeight, barDepth]} />
+      {/* Loser bar — medium gray on the bottom track */}
+      <mesh position={[loserW / 2, -0.55, 0]} castShadow>
+        <boxGeometry args={[loserW || 0.001, barHeight, barDepth]} />
         <meshStandardMaterial
           color="#9ca0a8"
           metalness={0.1}

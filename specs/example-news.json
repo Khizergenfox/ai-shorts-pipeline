@@ -1,5 +1,5 @@
 {
-  "_comment": "Example spec — sanitized news-style 60s short. This is the JSON shape Claude generates from a topic + sources. The render pipeline that consumes this ships in v0.2; for now it's here so you can see the structure.",
+  "_comment": "Example spec — a sanitized news-style 60s short showing the JSON shape Claude generates from a topic + sources. Use this as a reference when composing your own specs in public/sessions/<session-id>/spec-full.json.",
   "topic": "example-news",
   "title": "Example: News short with contrarian angle",
   "session": {

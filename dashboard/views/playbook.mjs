@@ -41,7 +41,7 @@ export function playbookView({ skillMd, exists, skillPath }) {
       <div class="card-title">Append a lesson learned</div>
       <p class="hint">Adds a dated entry to the "Lessons learned" section of the skill file. Append-only — never edits or deletes prior entries.</p>
       <form method="POST" action="/playbook/lesson" class="idea-form">
-        <textarea name="lesson" placeholder="What you learned (1–3 sentences). e.g. 'codeburn IG Reel got 2x DM-sends vs deepseek-v4 — emotional pain hooks (your bill is leaking) outperform analytical hooks (V4 vs Nvidia) on IG. Likely opposite on LinkedIn.'" required style="min-height:100px"></textarea>
+        <textarea name="lesson" placeholder="What you learned (1–3 sentences). e.g. 'Tutorial-format videos got 2x save-rate vs news-take videos this week — concrete how-to hooks outperformed contrarian hooks on IG. Likely the opposite on LinkedIn.'" required style="min-height:100px"></textarea>
         <input name="topic" placeholder="Topic / video this is from (optional)" />
         <div style="display:flex; justify-content:flex-end;">
           <button type="submit" class="btn">Append to skill</button>

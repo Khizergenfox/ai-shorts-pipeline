@@ -1,53 +1,45 @@
 import React from "react";
 import { AbsoluteFill, useCurrentFrame, useVideoConfig, spring, interpolate } from "remotion";
-import type { Scene } from "../lib/constants";
+import type { Scene } from "../../orchestrator/types";
 import { FONTS } from "../lib/fonts";
 
 /**
- * Story3DScene — v0.2.0 placeholder.
+ * Story3DScene — the extension point for narrative 3D variants.
  *
- * The full variant library (math_race, cost_8x, token_burn, sonar_pulse,
- * stat_3d_extrude, logo_grid_3d, data_pulse, signal_highlight,
- * revenue_time_chart, protocol_hub, ctr_drop, logo_orbit, typo_neon_blue,
- * typo_flame) ships in v0.2.1. The variants depend on `public/refs/` SVG
- * logos and per-brand text that needs proper data-driven plumbing — that
- * pass is queued for the next release.
+ * The skill ships the architecture: a single scene type that picks a
+ * variant from your library of Three.js components. The toolkit lives in
+ * `src/effects/three/` — `BarRace`, `MathField`, `NodeNetwork`,
+ * `Stat3DExtrude`, `LogoOrbit`, `LogoGrid3D`, `RevenueTimeChart`,
+ * `SignalHighlight`, `SuccessCheck3D`, `TypoNeonBlue`, `BloomHalo`,
+ * `CameraRig`, and friends.
  *
- * What ships now: a clean placeholder that won't crash if a spec specifies
- * a story_3d scene, plus the variant interface + the underlying
- * Three.js components in `src/effects/three/` (use them directly in your
- * own scene types).
+ * Compose those primitives into the variants your channel actually
+ * needs — the variant registry is yours to define. This file is the
+ * wiring point: take a `scene.storyVariant`, return the React
+ * composition that renders for that variant.
  *
- * To experiment now: write your own scene component in `src/scenes/`,
- * import the Three.js variant of your choice from `src/effects/three/`,
- * and register it in `MainVideo.tsx`'s scene-type switch.
+ * The default render (when a variant has no implementation yet)
+ * shows the variant name in a clean dashed-border card so you can
+ * see which beats still need a custom variant during your build pass.
  */
-export type StoryVariant =
-  | "math_race"
-  | "cost_8x"
-  | "token_burn"
-  | "sonar_pulse"
-  | "stat_3d_extrude"
-  | "logo_grid_3d"
-  | "data_pulse"
-  | "signal_highlight"
-  | "revenue_time_chart"
-  | "protocol_hub"
-  | "ctr_drop"
-  | "logo_orbit"
-  | "typo_neon_blue"
-  | "typo_flame";
-
 export const Story3DScene: React.FC<{ scene: Scene }> = ({ scene }) => {
   const frame = useCurrentFrame();
   const { fps } = useVideoConfig();
-  const variant = (scene as { variant?: StoryVariant }).variant ?? "math_race";
+  const variant = (scene as { storyVariant?: string }).storyVariant ?? "default";
 
   const appear = spring({
     frame: frame - 4,
     fps,
     config: { damping: 18, stiffness: 90 },
   });
+
+  // To add a custom variant, branch on `variant` here and return your
+  // composed Three.js + HTML overlay. Keep the two-layer pattern:
+  // Three.js for backdrop / particles / geometry, HTML for text + logos.
+  //
+  //   if (variant === "your_variant_name") {
+  //     return <YourComposition scene={scene} />;
+  //   }
 
   return (
     <AbsoluteFill
@@ -94,7 +86,7 @@ export const Story3DScene: React.FC<{ scene: Scene }> = ({ scene }) => {
             textShadow: "0 4px 24px rgba(0,0,0,0.7)",
           }}
         >
-          Variant placeholder
+          Variant slot
         </div>
         <div
           style={{
@@ -106,9 +98,7 @@ export const Story3DScene: React.FC<{ scene: Scene }> = ({ scene }) => {
             maxWidth: 720,
           }}
         >
-          The full Story3D variant library ships in v0.2.1. For now, write your
-          own scene component in <code style={{ background: "rgba(255,255,255,0.1)", padding: "2px 6px", borderRadius: 4 }}>src/scenes/</code> and
-          import the underlying Three.js piece from <code style={{ background: "rgba(255,255,255,0.1)", padding: "2px 6px", borderRadius: 4 }}>src/effects/three/</code>.
+          Define this variant by composing the Three.js primitives in <code style={{ background: "rgba(255,255,255,0.1)", padding: "2px 6px", borderRadius: 4 }}>src/effects/three/</code>. Add a branch in <code style={{ background: "rgba(255,255,255,0.1)", padding: "2px 6px", borderRadius: 4 }}>Story3DScene.tsx</code> that returns your composition for this variant name.
         </div>
       </div>
     </AbsoluteFill>

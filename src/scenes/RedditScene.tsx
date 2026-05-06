@@ -8,22 +8,22 @@ interface RedditSceneProps { scene: Scene; }
 
 export const RedditScene: React.FC<RedditSceneProps> = ({ scene }) => {
   const d = scene.redditData ?? {
-    title: "Taught Claude to talk like a caveman to use 75% less tokens.",
+    title: "Top Reddit thread headline goes here.",
     bodyLines: [],
-    upvotes: 1100,
+    upvotes: 1000,
     animateUpvotes: false,
   };
 
   return (
     <AbsoluteFill style={{ backgroundColor: "#0d0d0d", justifyContent: "center", padding: `${SAFE_AREA.top}px ${SAFE_AREA.left}px` }}>
       <RedditCard
-        subreddit={d.subreddit ?? "r/ClaudeAI"}
-        username={d.username ?? "u/flatty"}
+        subreddit={d.subreddit ?? "r/yoursubreddit"}
+        username={d.username ?? "u/example"}
         timeAgo={d.timeAgo ?? "4d ago"}
         title={d.title}
         bodyLines={d.bodyLines ?? []}
-        upvotes={d.upvotes ?? 1100}
-        comments={d.comments ?? 507}
+        upvotes={d.upvotes ?? 1000}
+        comments={d.comments ?? 200}
         animateUpvotes={d.animateUpvotes ?? false}
         highlightLine={d.highlightLine}
       />

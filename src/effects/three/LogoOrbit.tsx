@@ -2,12 +2,12 @@ import React from "react";
 import { useCurrentFrame, useVideoConfig, interpolate } from "remotion";
 
 /**
- * LogoOrbit — atmospheric glow rings for the dual-brand beat. The actual
- * Claude + Cursor logos are rendered as HTML overlays in Story3DScene
- * (which loads real anthropic.svg + cursor.svg via CSS mask).
+ * LogoOrbit — atmospheric glow rings for a dual-brand beat. The actual
+ * brand logos are rendered as HTML overlays in your Story3DScene
+ * variant (load your SVGs via CSS mask).
  *
- * This Three.js layer = ambient backdrop, two concentric ring halos
- * (one tinted Claude-coral, one tinted Cursor-silver) breathing.
+ * This Three.js layer is the ambient backdrop only: two concentric
+ * ring halos (tinted to your two accent colors) breathing.
  */
 export const LogoOrbit: React.FC = () => {
   const frame = useCurrentFrame();

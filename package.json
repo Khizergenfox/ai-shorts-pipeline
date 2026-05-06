@@ -1,6 +1,6 @@
 {
   "name": "ai-shorts-pipeline",
-  "version": "0.2.1",
+  "version": "0.2.2",
   "description": "Daily video production for anyone too busy to record and edit but whose audience still expects to hear from them. Orchestrates Remotion + ElevenLabs + Vertex Veo + Three.js as a single Claude Code skill, with a built-in marketing HQ dashboard.",
   "type": "module",
   "license": "MIT",

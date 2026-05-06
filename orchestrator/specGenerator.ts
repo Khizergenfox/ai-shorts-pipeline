@@ -34,7 +34,7 @@ When a key stat or number is mentioned in the narration:
 - INSTEAD: keep showing the source content (Claude chat, Reddit post) as background
 - Add a headlineText field to that scene: this is the large serif white heading that appears at the TOP
 - Add salmonHighlightLine: the exact text from the source that gets the salmon highlight box
-- Example: scene type = "claude_native", headlineText = "Saves almost 75%", salmonHighlightLine = "Save: 135 token. 75% down."
+- Example: scene type = "claude_native", headlineText = "Cuts cost in half", salmonHighlightLine = "the exact phrase from the source that should be highlighted"
 
 ### Pattern 2: VEO CLIPS — cinematic B-roll
 - Type: "veo_clip"
@@ -110,8 +110,8 @@ When a key stat or number is mentioned in the narration:
         ],
         "model": "claude-opus-4-5"
       },
-      "headlineText": "Saves almost 75%",          // optional: large serif heading at top
-      "salmonHighlightLine": "Save: 135 token.",    // optional: this exact text gets salmon box
+      "headlineText": "Big claim here",             // optional: large serif heading at top
+      "salmonHighlightLine": "phrase to highlight", // optional: this exact text gets salmon box
 
       // reddit_native fields:
       "redditData": {

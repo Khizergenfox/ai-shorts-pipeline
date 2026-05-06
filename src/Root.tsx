@@ -21,9 +21,10 @@ export const RemotionRoot: React.FC = () => {
       />
 
       {/*
-        Thumbnail compositions live in your private fork.
-        Drop a Composition entry per thumbnail React component you create.
-        Render via: node scripts/render-thumbnail.mjs (also in your private fork).
+        To add thumbnail-style still compositions, register a Composition
+        entry per thumbnail React component you create (in src/thumbnails/).
+        Pair with a small render script that selects a single composition
+        and writes a single frame as PNG/JPG.
       */}
     </>
   );

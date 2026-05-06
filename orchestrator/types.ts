@@ -16,26 +16,26 @@ export type SceneType =
   | "minimal_text"     // Pure black bg + clean sans-serif type, no decoration (Varun Mayya playbook)
   | "stat_reveal"      // Giant single number on black, headline + subhead
   | "news_article"     // Fake-but-realistic news article look with black-block phrase highlights
-  | "claude_ui_zoom"   // Replica of Claude usage UI with zooming progress bar (example: usage UI)
-  | "github_readme"    // Replica of GitHub repo card with install button (example: install button card)
-  | "claude_chat_mockup"  // Claude chat with prompt + response states (MetaAds b2/b9/b13)
-  | "campaign_launch"     // Meta Ads campaign launch panel (MetaAds b12)
-  | "pipeboard_mockup"    // Pipeboard MCP marketplace UI (MetaAds b15)
-  | "claude_desktop_mockup" // Claude Desktop settings — paste/tools states (MetaAds b16/b17)
-  | "meta_form"           // Meta auto-campaign URL+budget form (MetaAds b20)
+  | "claude_ui_zoom"   // Replica of an LLM usage UI with zooming progress bar
+  | "github_readme"    // Replica of GitHub repo card with install button
+  | "claude_chat_mockup"  // LLM chat replica with prompt + response states
+  | "campaign_launch"     // Ads/campaign launch panel mockup
+  | "pipeboard_mockup"    // Marketplace / dashboard UI mockup
+  | "claude_desktop_mockup" // Desktop-app settings panel — paste/tools states
+  | "meta_form"           // URL + budget form mockup (auto-campaign style)
   | "avatar_fullscreen"   // HeyGen avatar mp4 fills full 9:16 frame (hook/outro talking head, lip-synced to ElevenLabs audio)
   | "avatar_split_3d"     // Top 62% = story_3d viz, bottom 38% = avatar
   | "avatar_split_headline" // Top 62% = headline_card, bottom 38% = avatar
   | "avatar_split_news"   // Top 62% = news_article, bottom 38% = avatar (with startFrom offset for chained beats)
   | "avatar_split_minimal" // Top 62% = minimal_text, bottom 38% = avatar (with startFrom offset)
-  | "claude_refusal_mockup"  // Claude.ai-style chat showing user prompt + Claude refusing image gen (b05)
-  | "benchmark_leaderboard"  // Animated bar leaderboard with brand logos (b07: SWE-bench, etc.)
-  | "company_value_chart"    // Rising stock-style chart + counter animation (b09: $1B in 6 months)
-  | "safety_levels"          // ASL rings around AI capability core (b14: safety stricter as smarter)
-  | "image_gen_race"         // Many AI image-gen tools racing as bars (b23: market is crowded)
-  | "agent_terminal"         // Multi-agent terminal log streaming (b25: deep reasoning)
-  | "split_dual_workflow"    // Top: image-gen chaos / Bottom: Claude team building agents (b27)
-  | "negation_reveal"        // "NOT A X" with strikethrough, optional affirm (b06, b20)
+  | "claude_refusal_mockup"  // LLM-style chat replica showing user prompt + assistant refusal state
+  | "benchmark_leaderboard"  // Animated bar leaderboard with brand logos
+  | "company_value_chart"    // Rising stock-style chart + counter animation
+  | "safety_levels"          // Concentric rings around a capability core (e.g. AI safety levels)
+  | "image_gen_race"         // Multiple tools racing as bars (e.g. image generators)
+  | "agent_terminal"         // Multi-agent terminal log streaming
+  | "split_dual_workflow"    // Top: chaotic workflow / Bottom: clean alternative
+  | "negation_reveal"        // "NOT A X" with strikethrough, optional affirm
   // legacy types kept for compatibility
   | "full_scroll"
   | "github"
@@ -176,12 +176,14 @@ export interface Scene {
   shaderPreset?: "gradient" | "plasma" | "network" | "neongrid";
 
   // ── STORY 3D ─────────────────────────────────────────────────────────────
-  // Used when type === "story_3d" — picks the narrative 3D variant.
-  storyVariant?: "v4_drop" | "cost_8x" | "math_race" | "huawei_chip" | "node_network";
+  // Used when type === "story_3d" — picks the narrative 3D variant. Extend
+  // the union with your own variant names; the implementation switch lives
+  // in `src/scenes/Story3DScene.tsx`.
+  storyVariant?: "math_race" | "node_network" | "cost_8x" | string;
 
   /** Optional Veo cinematic clip rendered as a full-bleed background BEHIND
-   *  the 3D layer. Adds photoreal depth (e.g. silicon wafer macro, Beijing
-   *  skyline). The 3D layer overlays on top with semi-transparent stage. */
+   *  the 3D layer. Adds photoreal depth. The 3D layer overlays on top with
+   *  a semi-transparent stage. */
   videoBgSrc?: string;
   /** Darkening overlay strength (0-1) on the video bg, so 3D objects pop.
    *  Default 0.45. */
@@ -239,10 +241,9 @@ export interface Scene {
   };
 
   // ── UI MOCKUP STATE (used by claude_ui_zoom + github_readme) ─────────────
-  /** Drives which state the UI mockup renders. e.g. "fill" vs "redspike"
-   *  for Claude UI; "readme" vs "install" for GitHub; "prompt" vs
-   *  "thinking" vs "result" for Claude chat; "paste" vs "tools" for
-   *  Claude Desktop. Also "triple" on logo_orbit for 3-AI variant. */
+  /** Drives which sub-state the UI mockup renders. Each mockup scene
+   *  defines its own state strings — see the individual scene components
+   *  in src/scenes/ for the supported values. */
   uiState?: string;
 
   /** Optional chat content for ClaudeChatMockupScene. */

@@ -47,7 +47,7 @@ Every cut answers a question the script just planted in the viewer's head. Decor
 
 1. **Hook with a real source.** First 1–3 seconds is a real news article screenshot or a dramatic claim. Never a talking head, never a title card.
 
-2. **Literal before metaphorical.** "Huawei chips" gets a real chip photo first. Abstract 3D chip only after literal context is established. Earn the metaphor.
+2. **Literal before metaphorical.** A real-object reference first (the actual chip, the actual screenshot, the actual headline). Abstract 3D illustration only after literal context is established. Earn the metaphor.
 
 3. **Slow-fast-slow rhythm.** Hook = fast cuts (1.5–2s). Setup = slower (2.5–3s). Reveal = fast (1–2s). Conclusion = slower (2.5–3s). CTA = punchy (1.5s).
 
@@ -314,7 +314,7 @@ node scripts/render-full.mjs specs/example-news.json
 A single command from topic to finished video:
 
 ```bash
-node scripts/render-full.mjs "deepseek v4 + huawei chips angle"
+node scripts/render-full.mjs "your topic name here"
 ```
 
 ---

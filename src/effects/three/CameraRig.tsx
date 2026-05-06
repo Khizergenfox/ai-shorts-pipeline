@@ -38,11 +38,12 @@ export const CameraRig: React.FC<CameraRigProps> = ({ variant, durationSeconds }
     camZ = 10;
 
   switch (variant) {
-    case "v4_drop": {
-      // Card is 2.4w × 3.0h. Pull back enough to frame fully + bloom halo.
+    case "card_reveal": {
+      // For a center-card subject (~2.4w × 3.0h). Pull back enough to frame
+      // fully + bloom halo. Tiny parallax sway — adds life without leaving
+      // the subject behind.
       camZ = 8.0;
       camY = 0.4;
-      // Tiny parallax sway — adds life without leaving the subject behind
       camX = Math.sin(t * 0.18) * 0.35;
       break;
     }
@@ -62,9 +63,10 @@ export const CameraRig: React.FC<CameraRigProps> = ({ variant, durationSeconds }
       camX = 0;
       break;
     }
-    case "huawei_chip": {
-      // Chip is 3.2 × 3.2 — needs significant pullback in 9:16.
-      // Very slow turntable + tiny vertical drift. NO push-in.
+    case "chip_focus": {
+      // For a chip / square-object subject (~3.2 × 3.2) — needs significant
+      // pullback in 9:16. Very slow turntable + tiny vertical drift. NO
+      // push-in.
       const orbit = t * 0.08; // 0.08 rad/s = ~13° over a 3s scene
       camX = Math.sin(orbit) * 0.7;
       camY = 0.3 + Math.sin(t * 0.12) * 0.15;
