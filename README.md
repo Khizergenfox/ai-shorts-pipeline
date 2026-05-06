@@ -138,15 +138,17 @@ The skill enforces "literal before metaphorical" — real news article mockups b
 
 ---
 
-## What's in this release (v0.1.1)
+## What's in this release (v0.2.0)
 
 - ✅ `SKILL.md` — the full skill protocol Claude reads to render videos (editing rules, scene grammar, pacing curves, QA workflow, HeyGen avatar pipeline)
 - ✅ `dashboard/` — local marketing operations (multi-page Express, no build step, drag-to-reorder queue, copy-to-clipboard captions, append-only "Lessons learned" log)
-- ✅ Example data files so the dashboard runs immediately on first clone
-- ✅ Example spec in `specs/` so you can see the JSON shape Claude generates
-- ⏳ Render pipeline (Remotion compositions, render scripts, gen-audio, gen-veo, gen-heygen helpers) — **coming in v0.2** with proper sanitization and example assets
+- ✅ **Render pipeline** — Remotion entry, ~40 scene type implementations, 18 Three.js variants, the orchestrator, and 9 production scripts (render-full, gen-audio, gen-veo-broll-cinematic, gen-veo-from-imagen, gen-heygen-clip, poll-heygen-clips, render-3d, build-cuts-spec, test-vertex-auth)
+- ✅ All 12 synthesized SFX in `public/sfx/` so renders have sound on first run
+- ✅ `specs/example-news.json` and `scripts/example.txt` so you can see the spec shape and render an example end-to-end
+- ✅ Story3DScene ships as a **placeholder stub in v0.2.0** — the full data-driven variant library (math_race, cost_8x, token_burn, sonar_pulse, stat_3d_extrude, etc.) drops in v0.2.1. The underlying Three.js components in `src/effects/three/` are usable directly today
+- ✅ Voice tuning is **env-var driven** — `ELEVENLABS_STABILITY` / `_SIMILARITY_BOOST` / `_STYLE` / `_USE_SPEAKER_BOOST`. Defaults are ElevenLabs' neutral starting point (0.5 / 0.75 / 0.0). Tune to your cloned voice.
 
-The skill spec + dashboard alone is enough to start running a real content operation today. The render pipeline drops in v0.2.
+You can clone, set keys, drop a script in `scripts/example.txt`, and run `node scripts/gen-audio.mjs scripts/example.txt example` followed by `node scripts/render-full.mjs example` to produce your first video.
 
 ---
 
@@ -154,7 +156,8 @@ The skill spec + dashboard alone is enough to start running a real content opera
 
 - [x] **v0.1.0** — Skill spec, marketing HQ dashboard, example data, architecture diagram
 - [x] **v0.1.1** — Clarified positioning, HeyGen avatar layer documented in SKILL
-- [ ] **v0.2.0** — Render pipeline (Remotion compositions, render-full.mjs, gen-audio.mjs, Veo b-roll helpers, HeyGen avatar helpers)
+- [x] **v0.2.0** — Render pipeline (Remotion compositions, render-full, gen-audio, Veo b-roll, HeyGen avatar helpers, all SFX)
+- [ ] **v0.2.1** — Full Story3D variant library (data-driven), additional scene types (channel-agnostic versions of the 10 currently held back), generic spec-builder template
 - [ ] **v0.3.0** — YouTube + LinkedIn + X uploaders integrated into dashboard
 - [ ] **v0.4.0** — Auto-fetch performance metrics from each platform's API
 - [ ] **v0.5.0** — Voice cloning setup walkthrough

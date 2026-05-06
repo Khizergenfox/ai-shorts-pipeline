@@ -1,0 +1,13 @@
+Most people building with AI assume the model is the bottleneck.
+
+It isn't.
+
+The bottleneck is what you ask the model to do. The same model with the right framing produces work that looks ten times better than the same model with a vague prompt.
+
+So if your AI output feels generic, before you switch models, switch your prompt.
+
+Two changes that worked for us. First, give the model the constraint, not the goal — "produce a 60-second video script" is a goal; "produce a 60-second script in thinking-flow prose, no list-style sentences, with one contrarian angle in the second beat" is a constraint. Constraints produce surprises. Goals produce averages.
+
+Second, show the model an example of the output you actually want. Not what you mean by "good" — a real piece of writing or code that you'd ship. The model anchors on examples far more than on adjectives.
+
+That's it. Same model, sharper output. Try it on tomorrow's task.

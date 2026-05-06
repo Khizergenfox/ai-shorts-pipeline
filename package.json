@@ -1,6 +1,6 @@
 {
   "name": "ai-shorts-pipeline",
-  "version": "0.1.1",
+  "version": "0.2.0",
   "description": "Turn one AI/tech topic into a finished 60s vertical video. Orchestrates Remotion + ElevenLabs + Vertex Veo + Three.js as a single Claude Code skill, with a built-in marketing HQ dashboard.",
   "type": "module",
   "license": "MIT",
@@ -17,15 +17,55 @@
     "video-generation",
     "creator-tools",
     "elevenlabs",
-    "veo"
+    "veo",
+    "heygen",
+    "threejs"
   ],
   "scripts": {
+    "studio": "npx remotion studio",
+    "build": "npx remotion bundle",
+    "render": "node scripts/render-full.mjs",
+    "render-3d": "node scripts/render-3d.mjs",
+    "gen-audio": "node scripts/gen-audio.mjs",
+    "gen-veo": "node scripts/gen-veo-broll-cinematic.mjs",
+    "gen-heygen": "node scripts/gen-heygen-clip.mjs",
+    "generate": "npx tsx orchestrator/index.ts",
     "dashboard": "node dashboard/server.mjs",
     "start": "node dashboard/server.mjs"
   },
   "dependencies": {
+    "@anthropic-ai/sdk": "^0.88.0",
+    "@google/generative-ai": "^0.21.0",
+    "@react-three/fiber": "^8.18.0",
+    "@react-three/postprocessing": "^2.19.1",
+    "@remotion/bundler": "^4.0.0",
+    "@remotion/google-fonts": "^4.0.0",
+    "@remotion/renderer": "^4.0.0",
+    "@remotion/three": "^4.0.455",
+    "@types/three": "^0.160.0",
+    "axios": "^1.7.0",
+    "dotenv": "^16.4.0",
     "express": "^5.0.0",
-    "open": "^11.0.0"
+    "ffmpeg-static": "^5.2.0",
+    "fluent-ffmpeg": "^2.1.3",
+    "google-auth-library": "^10.6.2",
+    "googleapis": "^171.4.0",
+    "nanoid": "^3.3.7",
+    "open": "^11.0.0",
+    "postprocessing": "^6.39.1",
+    "puppeteer": "^22.0.0",
+    "react": "^18.0.0",
+    "react-dom": "^18.0.0",
+    "remotion": "^4.0.0",
+    "three": "^0.160.1"
+  },
+  "devDependencies": {
+    "@types/fluent-ffmpeg": "^2.1.27",
+    "@types/node": "^20.0.0",
+    "@types/react": "^18.0.0",
+    "@types/react-dom": "^18.0.0",
+    "tsx": "^4.7.0",
+    "typescript": "^5.0.0"
   },
   "engines": {
     "node": ">=20"

@@ -179,7 +179,7 @@ export async function unsetPosted(topic, platform) {
   return posted;
 }
 
-// ---------- combined view: everything Khizer might want to see ----------
+// ---------- combined view: everything you might want to see ----------
 
 export async function listAllVideos() {
   const queue = await listQueue();
