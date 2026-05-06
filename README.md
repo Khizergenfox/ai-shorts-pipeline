@@ -1,21 +1,46 @@
 # ai-shorts-pipeline
 
-A Claude Code skill that turns one AI/tech topic into a finished 60-second vertical video.
+For anyone whose calendar is full but whose audience still expects to hear from them.
+
+Daily content has become a tax on every operator, founder, and builder trying to grow a name. Most days you don't have an hour to record, edit, caption, and post. **ai-shorts-pipeline automates the production so you can keep showing up — even on the days you can't.** The point isn't to make videos faster for fun. The point is **consistency** for the people whose real job isn't creating content but who still need to.
+
+It's a Claude Code skill. You give it a topic and a couple of source links. It hands back a finished 60-second vertical video, a voiceover in your cloned voice, and per-platform captions for YouTube Shorts, Instagram Reels, LinkedIn, and X. ~5–7 minutes per video on a normal laptop.
 
 ![Marketing HQ dashboard — Today view](./assets/dashboard-today.png)
 
-Under the hood, the skill orchestrates four moving parts in a single render pass:
+Under the hood, the skill orchestrates these moving parts in a single render pass:
 
 - **ElevenLabs** for voiceover (your cloned voice), with word-level timestamp alignment
 - **Vertex Veo** for cinematic B-roll (text-to-video and Imagen→Veo image-to-video)
 - **Three.js** for custom 3D scenes — particle systems, brand strikethroughs, data-viz
 - **Remotion** for everything else: composition, timing, encoding, frame extraction
+- **HeyGen** *(optional)* for presenter-led avatar segments at the hook and CTA
 
 Plus a local-only **marketing HQ dashboard** (multi-page Express app) for queue management, posting cadence, and per-platform publishing kits with copy-buttons and char-limit enforcement.
 
-Total time topic-to-final-MP4 on a normal laptop: **~5–7 minutes**.
-
 Battle-tested on [@AIinBusiness](https://youtube.com/@AIinBusiness) — daily videos rendered by this exact pipeline.
+
+---
+
+## What you get vs what you bring (read this first)
+
+This repo is honest about what it does and doesn't do.
+
+**What you get from cloning this repo:**
+- A skill protocol Claude follows for every video — editing rules, scene grammar, pacing curves, anti-patterns, mandatory QA workflow. The decisions that took us months to settle, condensed into one file.
+- A working marketing HQ dashboard you can run on `localhost`. Queue, calendar, roadmap, performance, ideas, hooks, playbook.
+- (Coming in v0.2) The actual render pipeline: Remotion compositions, render scripts, gen-audio, gen-veo helpers, an orchestrator that turns a topic into a spec.
+
+**What you bring yourself:**
+- Your voice clone settings (ElevenLabs stability, similarity, style — these are tuned to a specific voice and tone; yours will be different)
+- Your topic-research process (which AI news matters this week, who you're writing for, the contrarian angle — that's editorial judgment, not code)
+- Your hooks library (you build it as you ship and learn)
+- Your performance benchmarks (your channel's 3-second retention floor, your save-to-share ratio — yours, not mine)
+- The take. Always the take.
+
+The plumbing is here. The framework gives you ~70% of the craftsmanship of *framing*. The 30% — the voice you tune, the hooks you build, the takes you bring — is what makes the channel *yours* instead of mine. That's a feature, not a gap.
+
+For the full skill protocol — editing rules, scene grammar, anti-patterns, QA workflow — see [`SKILL.md`](./SKILL.md).
 
 ---
 
@@ -29,33 +54,25 @@ flowchart LR
     C -->|scene-by-scene spec| E[Remotion composition]
     E -->|backdrop + 3D| F[Three.js scenes]
     E -->|cinematic B-roll| G[Vertex Veo]
-    D --> H[Render pass]
-    E --> H
-    F --> H
-    G --> H
-    H --> I[1080×1920 MP4]
-    H --> J[Per-platform publishing kit]
-    I --> K[Marketing HQ dashboard]
-    J --> K
-    K -->|YouTube · Instagram · LinkedIn · X| L[Posted]
+    E -->|optional avatar| H[HeyGen]
+    D --> I[Render pass]
+    E --> I
+    F --> I
+    G --> I
+    H --> I
+    I --> J[1080×1920 MP4]
+    I --> K[Per-platform publishing kit]
+    J --> L[Marketing HQ dashboard]
+    K --> L
+    L -->|YouTube · Instagram · LinkedIn · X| M[Posted]
 
     style B fill:#f59e0b,stroke:#92400e,color:#1c1917
-    style H fill:#f59e0b,stroke:#92400e,color:#1c1917
-    style K fill:#1f2937,stroke:#f59e0b,color:#f5f5f4
-    style L fill:#10b981,stroke:#064e3b,color:#1c1917
+    style I fill:#f59e0b,stroke:#92400e,color:#1c1917
+    style L fill:#1f2937,stroke:#f59e0b,color:#f5f5f4
+    style M fill:#10b981,stroke:#064e3b,color:#1c1917
 ```
 
 The skill is the orchestration layer. Claude reads `SKILL.md`, picks the right scenes for each beat, generates the spec, and runs the render. The dashboard is where you actually live — queueing, scheduling, copying captions, tracking what shipped.
-
----
-
-## What this is, and what it isn't
-
-**It is:** a working framework for daily short-form content. Drop it into Claude Code, give Claude a topic and a couple of source links, get back a finished 1080×1920 video, a voiceover, and per-platform captions for YouTube / Instagram / LinkedIn / X.
-
-**It isn't:** a turnkey channel. The framework handles plumbing — what the videos *look like*, how they're paced, how they're encoded. The parts that make a channel *yours* (voice tuning, topic-research, hook calibration, the take you bring) you build yourself. That's a feature, not a gap.
-
-For the full skill protocol — editing rules, scene grammar, anti-patterns, QA workflow — see [`SKILL.md`](./SKILL.md).
 
 ---
 
@@ -66,7 +83,7 @@ git clone https://github.com/Khizergenfox/ai-shorts-pipeline.git
 cd ai-shorts-pipeline
 npm install
 cp .env.example .env
-# The dashboard runs without any keys. Render pipeline (v0.2) needs ELEVENLABS_API_KEY etc.
+# Dashboard runs without any keys. Render pipeline (v0.2) needs ELEVENLABS_API_KEY etc.
 
 npm run dashboard      # opens http://localhost:5173
 ```
@@ -121,13 +138,13 @@ The skill enforces "literal before metaphorical" — real news article mockups b
 
 ---
 
-## What's in this release (v0.1.0)
+## What's in this release (v0.1.1)
 
-- ✅ `SKILL.md` — the full skill protocol Claude reads to render videos
+- ✅ `SKILL.md` — the full skill protocol Claude reads to render videos (editing rules, scene grammar, pacing curves, QA workflow, HeyGen avatar pipeline)
 - ✅ `dashboard/` — local marketing operations (multi-page Express, no build step, drag-to-reorder queue, copy-to-clipboard captions, append-only "Lessons learned" log)
 - ✅ Example data files so the dashboard runs immediately on first clone
 - ✅ Example spec in `specs/` so you can see the JSON shape Claude generates
-- ⏳ Render pipeline (Remotion compositions, render scripts, gen-audio, gen-veo helpers) — **coming in v0.2** with proper sanitization and example assets
+- ⏳ Render pipeline (Remotion compositions, render scripts, gen-audio, gen-veo, gen-heygen helpers) — **coming in v0.2** with proper sanitization and example assets
 
 The skill spec + dashboard alone is enough to start running a real content operation today. The render pipeline drops in v0.2.
 
@@ -136,7 +153,8 @@ The skill spec + dashboard alone is enough to start running a real content opera
 ## Roadmap
 
 - [x] **v0.1.0** — Skill spec, marketing HQ dashboard, example data, architecture diagram
-- [ ] **v0.2.0** — Render pipeline (Remotion compositions, render-full.mjs, gen-audio.mjs, Veo b-roll helpers)
+- [x] **v0.1.1** — Clarified positioning, HeyGen avatar layer documented in SKILL
+- [ ] **v0.2.0** — Render pipeline (Remotion compositions, render-full.mjs, gen-audio.mjs, Veo b-roll helpers, HeyGen avatar helpers)
 - [ ] **v0.3.0** — YouTube + LinkedIn + X uploaders integrated into dashboard
 - [ ] **v0.4.0** — Auto-fetch performance metrics from each platform's API
 - [ ] **v0.5.0** — Voice cloning setup walkthrough

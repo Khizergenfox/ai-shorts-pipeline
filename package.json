@@ -1,6 +1,6 @@
 {
   "name": "ai-shorts-pipeline",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Turn one AI/tech topic into a finished 60s vertical video. Orchestrates Remotion + ElevenLabs + Vertex Veo + Three.js as a single Claude Code skill, with a built-in marketing HQ dashboard.",
   "type": "module",
   "license": "MIT",

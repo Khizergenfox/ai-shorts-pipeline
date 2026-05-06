@@ -1,7 +1,7 @@
 
 ---
 name: Daily AI Shorts
-description: A Claude Code skill that takes one AI/tech topic and renders a finished 60-second vertical video — voiceover, scene composition, B-roll, captions — ready to post on YouTube Shorts, Instagram Reels, LinkedIn, and X. Built for solo creators who want daily output without daily editing.
+description: A Claude Code skill for anyone whose calendar is full but whose audience still expects to hear from them. Automates the production of daily 60-second vertical videos — voiceover, scene composition, B-roll, optional avatar, captions — so consistency stops being a tax. Ready to post on YouTube Shorts, Instagram Reels, LinkedIn, and X.
 type: skill
 license: MIT
 status: active
@@ -9,6 +9,10 @@ status: active
 
 # Daily AI Shorts
 
+> For anyone whose calendar is full but whose audience still expects to hear from them.
+>
+> Daily content is now a tax on every operator, founder, and builder trying to grow a name. Most days you don't have an hour to record, edit, caption, and post. This skill automates the production so you can keep showing up — even on the days you can't. The point is **consistency** for the people whose real job isn't creating content but who still need to.
+>
 > Drop this skill into Claude Code. Give it a topic and a few sources. It hands you back a finished 9:16 video, a voiceover, and per-platform captions. No editor. No camera. Around 5–7 minutes per video on a normal laptop.
 >
 > Battle-tested on [@AIinBusiness](https://youtube.com/@AIinBusiness) — daily videos rendered by this exact pipeline.
@@ -178,6 +182,84 @@ The wiring point in this codebase: `Story3DScene`'s `VariantOverlay`. Three.js r
 
 ---
 
+## (Optional) HeyGen avatar pipeline
+
+For when you want yourself (or a custom presenter) on screen in some videos — not every one, just the ones that benefit from a face. The skill ships with a HeyGen integration that wires a trained avatar into specific scene slots.
+
+### When to use it
+
+Avatar segments work best at:
+- The hook (first 3–5 seconds) — establishes the speaker as the source of the take
+- The CTA (last 3–4 seconds) — the personal moment that asks for the follow
+
+Avatar segments work worst at:
+- Mid-video data reveals — the face competes with the data
+- Decorative beats — wastes attention
+
+Use sparingly. A reasonable upper bound: ~10–15% of total video screen time. More than that and the avatar becomes the show, not the substance, and retention drops on muted-mobile playback (which is most playback).
+
+### Architecture (Path D)
+
+```
+ElevenLabs audio.mp3  ─┐
+                       ├─→ slice → upload to HeyGen as asset
+                       │              ↓ asset_id
+                       │     create_video_from_avatar (OAuth MCP)
+                       │              ↓ video_id
+                       │     poll /v1/video_status.get
+                       │              ↓ video_url
+                       └─→ download → AvatarClipScene → Remotion composite
+```
+
+The audio is generated once via ElevenLabs, then a slice is uploaded to HeyGen as an asset. HeyGen generates a lip-synced video against that asset. The result is downloaded and composited as a scene type alongside the other Remotion scenes.
+
+### Critical billing rule (don't get this wrong)
+
+There are two paths to HeyGen and they bill differently. Pick the wrong one and you'll burn API credits that aren't included in your subscription.
+
+| Path | Tool to call | Billing |
+|---|---|---|
+| **OAuth MCP** *(use this)* | `mcp__heygen__create_video_from_avatar` | Subscription credits — included in your HeyGen plan (Free's 1 Avatar IV vid/mo, Creator's ~200/mo) |
+| **Direct REST** with `X-API-KEY` | `/v2/video/generate` | Separate API credits — **NOT** included in subscription |
+
+Always go OAuth path for video generation. Asset upload via the API key is fine (it's storage, no credit cost).
+
+### Resolution gates
+
+- Free tier rejects 1080p with `RESOLUTION_NOT_ALLOWED`. Use 720p on Free.
+- Creator+ supports 1080p.
+
+### Avatar engine quirk
+
+`digital_twin` avatars only support `avatar_iv` and `avatar_v` engines. The server auto-picks the engine — there's no override flag. Quotas are per-engine-tier, so there's no "downgrade to III" escape hatch if you blow through your IV credits.
+
+### Slot patterns (general guidance)
+
+This is the part that takes iteration. Where in the video the avatar appears matters more than how many seconds you give it. The skill exposes scene types like `avatar_split_headline` (avatar + topic card) and `avatar_fullscreen` (face fills frame), and you compose them into the spec by hand or via Claude.
+
+The specific slot calibration that lands hardest for a given creator (which beat to put the avatar at, which to leave for data viz, when to splitscreen vs fullscreen) is exactly the kind of thing you'll dial in by shipping. The skill ships the mechanism, not the calibration.
+
+### What you bring
+
+- A trained HeyGen avatar (`avatar_id`) and matching cloned voice (`voice_id`)
+- A subscription that has the right Avatar IV/V credits for your monthly volume
+- One identity file in your local project (gitignored) holding those IDs
+
+### What the skill handles
+
+- Audio slicing aligned to the avatar beat boundaries
+- Asset upload via the storage endpoint
+- Video generation via the OAuth MCP path
+- Polling and download
+- Compositing the result as a Remotion scene
+- Muting the avatar mp4 in Remotion (the master ElevenLabs audio is already playing globally)
+
+### Reusing avatar clips across renders
+
+Generated avatar mp4 files are reusable across rendered versions. Once you've generated an avatar clip for a topic, re-rendering the same topic with a different layout costs $0 in HeyGen credits — the generated mp4s sit in your sessions directory and the spec just references them. Plan your iteration accordingly: render layout-only changes (cuts, captions, music) without re-queuing HeyGen.
+
+---
+
 ## Script writing rules for TTS
 
 These are non-negotiable if you're using ElevenLabs or any other modern TTS:
@@ -206,6 +288,11 @@ ELEVENLABS_VOICE_ID=...           # your cloned voice
 GEMINI_API_KEY=...                # script analysis
 GOOGLE_VERTEX_PROJECT=...         # Veo b-roll (optional)
 ANTHROPIC_API_KEY=...             # if orchestrating via Claude API
+
+# HeyGen avatar pipeline (optional)
+HEYGEN_API_KEY=...                # for asset uploads
+HEYGEN_AVATAR_ID=...              # your trained avatar
+HEYGEN_VOICE_ID=...               # avatar voice (often same as ElevenLabs voice clone)
 ```
 
 ---
@@ -288,6 +375,8 @@ When Claude is composing a video spec, it picks scenes from this library. Each i
 | `veo_broll` | Veo-generated cinematic b-roll, full-bleed |
 | `story_3d` | Three.js variants (math_race, cost_8x, token_burn, etc.) |
 | `minimal_text` | Pure black with one line of text — use sparingly |
+| `avatar_split_headline` | *(optional, HeyGen)* split-screen with topic card on top, presenter face on bottom — best at the hook |
+| `avatar_fullscreen` | *(optional, HeyGen)* presenter face fills the frame — best at the CTA, max 3–4s |
 
 ---
 
