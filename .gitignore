@@ -1,0 +1,35 @@
+# Node / build
+node_modules/
+out/frames*/
+out/*.mp4
+*.log
+
+# Tokens / secrets
+.tokens/
+.env
+.env.*
+!.env.example
+
+# Local-only state — your captions, hooks, perf data stay private
+# (the .example.json versions are committed; your real data is not)
+dashboard/data/ideas.json
+dashboard/data/hooks.json
+dashboard/data/performance.json
+dashboard/data/roadmap.json
+dashboard/data/plan.json
+
+# Local-only content
+out/final/queue/*-publishing-kit.md
+out/final/queue/*-final.mp4
+out/final/uploaded/
+
+# Prompt files (the parts that produce your specific aesthetic)
+specs/*-private*.json
+**/prompts/*.md
+**/voice-config.json
+
+# OS / editor
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/

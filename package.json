@@ -1,0 +1,34 @@
+{
+  "name": "ai-shorts-pipeline",
+  "version": "0.1.0",
+  "description": "Turn one AI/tech topic into a finished 60s vertical video. Orchestrates Remotion + ElevenLabs + Vertex Veo + Three.js as a single Claude Code skill, with a built-in marketing HQ dashboard.",
+  "type": "module",
+  "license": "MIT",
+  "homepage": "https://github.com/Khizergenfox/ai-shorts-pipeline",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Khizergenfox/ai-shorts-pipeline.git"
+  },
+  "keywords": [
+    "claude-code",
+    "claude-code-skill",
+    "remotion",
+    "ai-content",
+    "video-generation",
+    "creator-tools",
+    "elevenlabs",
+    "veo"
+  ],
+  "scripts": {
+    "dashboard": "node dashboard/server.mjs",
+    "start": "node dashboard/server.mjs"
+  },
+  "dependencies": {
+    "express": "^5.0.0",
+    "open": "^11.0.0"
+  },
+  "engines": {
+    "node": ">=20"
+  },
+  "author": "Khizer Hussain (https://github.com/Khizergenfox)"
+}

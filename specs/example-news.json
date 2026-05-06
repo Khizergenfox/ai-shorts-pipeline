@@ -1,0 +1,146 @@
+{
+  "_comment": "Example spec — sanitized news-style 60s short. This is the JSON shape Claude generates from a topic + sources. The render pipeline that consumes this ships in v0.2; for now it's here so you can see the structure.",
+  "topic": "example-news",
+  "title": "Example: News short with contrarian angle",
+  "session": {
+    "id": "example-news",
+    "totalSeconds": 60,
+    "fps": 30,
+    "width": 1080,
+    "height": 1920
+  },
+  "narration": {
+    "scriptText": "Big company X just shipped Y. Most people are reading this wrong. Here's the real signal — and what it means for everyone building on Z.",
+    "voiceId": "<your-elevenlabs-voice-id>",
+    "audioPath": "public/sessions/example-news/audio.mp3",
+    "wordTimestampsPath": "public/sessions/example-news/word-timestamps.json"
+  },
+  "scenes": [
+    {
+      "id": "s01_hook",
+      "type": "news_article",
+      "durationSeconds": 3.0,
+      "pacing": "fast",
+      "data": {
+        "publication": "TechCrunch",
+        "headline": "Big company X ships Y",
+        "subhead": "What it means for the ecosystem",
+        "highlightPhrase": "ships Y"
+      },
+      "sfx": "thump"
+    },
+    {
+      "id": "s02_setup",
+      "type": "headline_card",
+      "durationSeconds": 4.5,
+      "pacing": "slow",
+      "data": {
+        "logo": "company-x",
+        "headline": "Most people are reading this wrong.",
+        "lowerThird": "Pattern interrupt"
+      },
+      "sfx": "whoosh"
+    },
+    {
+      "id": "s03_compare",
+      "type": "story_3d",
+      "durationSeconds": 6.0,
+      "pacing": "slow",
+      "data": {
+        "variant": "math_race",
+        "labelA": "Before Y",
+        "labelB": "After Y",
+        "factor": 8
+      },
+      "sfx": "riser"
+    },
+    {
+      "id": "s04_stat",
+      "type": "stat_reveal",
+      "durationSeconds": 2.5,
+      "pacing": "fast",
+      "data": {
+        "value": "10x",
+        "label": "throughput on the new path"
+      },
+      "zoom": { "fromScale": 0.94, "toScale": 1.04 },
+      "sfx": "thump"
+    },
+    {
+      "id": "s05_pivot",
+      "type": "minimal_text",
+      "durationSeconds": 3.0,
+      "pacing": "slow",
+      "data": {
+        "text": "But here's what nobody is saying."
+      },
+      "sfx": "whoosh"
+    },
+    {
+      "id": "s06_broll",
+      "type": "veo_broll",
+      "durationSeconds": 5.0,
+      "pacing": "fast",
+      "data": {
+        "prompt": "anamorphic 50mm cinematic shot of a server rack in a darkened data center, slow dolly forward, teal-orange color grade, Mr Robot vibe",
+        "videoPath": "public/sessions/example-news/broll-01.mp4"
+      },
+      "sfx": "riser"
+    },
+    {
+      "id": "s07_bullet1",
+      "type": "bullet_item",
+      "durationSeconds": 3.0,
+      "pacing": "fast",
+      "data": {
+        "numeral": "1",
+        "text": "Cost of inference drops"
+      },
+      "sfx": "click"
+    },
+    {
+      "id": "s08_bullet2",
+      "type": "bullet_item",
+      "durationSeconds": 3.0,
+      "pacing": "fast",
+      "data": {
+        "numeral": "2",
+        "text": "Distribution shifts to the edge"
+      },
+      "sfx": "click"
+    },
+    {
+      "id": "s09_bullet3",
+      "type": "bullet_item",
+      "durationSeconds": 3.0,
+      "pacing": "fast",
+      "data": {
+        "numeral": "3",
+        "text": "Builders who ignored Z get punished"
+      },
+      "sfx": "click"
+    },
+    {
+      "id": "s10_conclusion",
+      "type": "headline_card",
+      "durationSeconds": 7.0,
+      "pacing": "slow",
+      "data": {
+        "logo": "company-x",
+        "headline": "If you're building with Z, this is the week to look at it again.",
+        "lowerThird": "Operator take"
+      },
+      "sfx": "thump"
+    },
+    {
+      "id": "s11_cta",
+      "type": "minimal_text",
+      "durationSeconds": 2.0,
+      "pacing": "punchy",
+      "data": {
+        "text": "Follow for daily AI shorts."
+      },
+      "sfx": "thump"
+    }
+  ]
+}
