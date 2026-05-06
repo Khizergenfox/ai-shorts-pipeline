@@ -1,7 +1,7 @@
 {
   "name": "ai-shorts-pipeline",
-  "version": "0.2.0",
-  "description": "Turn one AI/tech topic into a finished 60s vertical video. Orchestrates Remotion + ElevenLabs + Vertex Veo + Three.js as a single Claude Code skill, with a built-in marketing HQ dashboard.",
+  "version": "0.2.1",
+  "description": "Daily video production for anyone too busy to record and edit but whose audience still expects to hear from them. Orchestrates Remotion + ElevenLabs + Vertex Veo + Three.js as a single Claude Code skill, with a built-in marketing HQ dashboard.",
   "type": "module",
   "license": "MIT",
   "homepage": "https://github.com/Khizergenfox/ai-shorts-pipeline",
